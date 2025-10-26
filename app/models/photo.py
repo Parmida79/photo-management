@@ -31,9 +31,9 @@ class Photo(TimestampMixin, Base):
     analysis_status: Mapped[str] = mapped_column(String, default='pending')  # pending, processing, completed, failed
     analysis_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)
 
-    # Relationships - TODO: Uncomment when EmotionAnalysis and ColorAnalysis models are created
-    # emotion_analysis = relationship('EmotionAnalysis', back_populates='photo', uselist=False)
-    # color_analysis = relationship('ColorAnalysis', back_populates='photo', uselist=False)
+    # Relationships
+    emotion_analysis = relationship('EmotionAnalysis', back_populates='photo', uselist=False)
+    color_analysis = relationship('ColorAnalysis', back_populates='photo', uselist=False)
 
     def __repr__(self):
         return f'<Photo(id={self.id}, filename={self.filename})>'

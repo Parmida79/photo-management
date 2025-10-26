@@ -9,7 +9,7 @@ from app.db import create_db_and_tables, engine, drop_and_create_db
 from app.main import app
 
 # Import all models to ensure they're registered with Base.metadata
-from app.models import Photo
+from app.models import Photo, ColorAnalysis, EmotionAnalysis, DailySummary, Album
 
 load_dotenv()
 
