@@ -1,11 +1,11 @@
 import io
 import os
 
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
+from app.api.v1 import public_router
 from app.db import Base, engine, create_database_if_not_exists
 
 # Import all models to ensure they're registered with Base.metadata
@@ -66,6 +66,33 @@ app.add_middleware(
     allow_headers=["*"],
     # expose_headers=["*"]
 )
+
+# Include routers
+app.include_router(public_router)
+# app.include_router(restricted_router)
+
+@app.get("/")
+async def root():
+    return {
+        "message": "AI-Powered Photo Management Service",
+        "version": "1.0.0",
+        "endpoints": {
+            "upload": "POST /api/v1/upload",
+            "get_photo": "GET /api/v1/photos/{photo_id}",
+            "list_photos": "GET /api/v1/photos",
+            "delete_photo": "GET /api/v1/photos",
+            "search": "GET /api/v1/search?q={query}",
+            "tag": "GET /api/v1/search/tags?q={query}",
+            "emotion": "GET /api/v1/search/emotions?q={query}",
+            "color": "GET /api/v1/search/colors?q={query}",
+            "generate_album": "POST /api/v1/albums-generator",
+            "daily_summary": "GET /api/v1/daily-summary/{date}",
+            "trends": "GET /api/v1/trends",
+            "emotion_analysis": "GET /api/v1/emotion-analysis",
+            "color_analysis": "GET /api/v1/color-analysis",
+            "photo_analysis": "GET /api/v1/photo-analysis/{photo_id}",
+        }
+    }
 
 @app.get("/health")
 async def health_check():
