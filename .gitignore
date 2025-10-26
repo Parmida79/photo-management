@@ -155,3 +155,6 @@ pyrightconfig.json
 # iml file(Module configuration)
 .iml
 .idea/misc.xml
+
+HF_DEPLOYMENT_NOTES.md
+hf_main.py
