@@ -166,7 +166,7 @@ The configuration system includes built-in validation:
 ## Usage in Code
 
 ```python
-from app.app import settings
+from app.config import settings
 
 # Access configuration values
 print(f"App name: {settings.app_name}")
