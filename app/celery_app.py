@@ -2,7 +2,7 @@ from celery import Celery
 import asyncio
 import os
 
-from app import settings
+from app.config import settings
 from app.db import SessionLocal
 from app.models import Photo, EmotionAnalysis, ColorAnalysis, DailySummary
 from app.services.ai_service import ai_service
@@ -12,7 +12,8 @@ celery_app = Celery(
     "photo_management",
     broker=settings.redis_url,
     backend=settings.redis_url,
-    include=['app.tasks.photo_analysis']
+    # Tasks are defined in this file, so no need to include other modules
+    # include=['app.tasks.photo_analysis']  # REMOVED - this path doesn't exist
 )
 
 # Configure Celery

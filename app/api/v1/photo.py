@@ -15,6 +15,9 @@ from app.models import Photo
 from app.schemas import UploadPhotoResponse, UploadPhotosResponse
 from app.utils.helpers import path_id_validator
 
+# Import Celery task for async photo analysis
+from app.celery_app import analyze_photo_task
+
 upload_photo_router = APIRouter()
 
 class PhotoResponse:
@@ -103,6 +106,12 @@ async def upload_photo(
         session.add(photo)
         session.commit()
         session.refresh(photo)
+
+        # Trigger async AI analysis using Celery
+        task = analyze_photo_task.delay(photo_id, file_path)
+
+        # Alternative: Direct async approach (commented out)
+        # asyncio.create_task(analyze_photo_async(photo_id, file_path))
 
         return {
             "message": "Photo uploaded successfully",
