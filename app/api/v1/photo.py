@@ -19,6 +19,7 @@ from app.utils.helpers import path_id_validator
 from app.celery_app import analyze_photo_task
 
 upload_photo_router = APIRouter()
+photo_router = APIRouter()
 
 class PhotoResponse:
     def __init__(self, photo: Photo):
@@ -126,7 +127,7 @@ async def upload_photo(
             os.remove(file_path)
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
 
-@upload_photo_router.get('/{photo_id}', response_model=UploadPhotoResponse)
+@photo_router.get('/{photo_id}', response_model=UploadPhotoResponse)
 @path_id_validator
 async def get_photo(
     photo_id: str,
@@ -148,7 +149,7 @@ async def get_photo(
 
     return photo
 
-@upload_photo_router.get('/', response_model=Page[UploadPhotosResponse])
+@photo_router.get('/', response_model=Page[UploadPhotosResponse])
 async def list_photos(
     skip: int = Query(0, ge=0),
     limit: int = Query(20, ge=1, le=100),
@@ -166,7 +167,7 @@ async def list_photos(
 
     return paginate(photos)
 
-@upload_photo_router.delete('/{photo_id}')
+@photo_router.delete('/{photo_id}')
 @path_id_validator
 async def delete_photo(
     photo_id: str,
